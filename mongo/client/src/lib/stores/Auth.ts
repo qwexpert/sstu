@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store'
-import { login, register, getUser, logout } from '$lib/auth'
+import { login, register, logout, getSession, isSessionValid } from '$lib/auth'
 
 
 interface AuthStore {
@@ -31,8 +31,9 @@ function createAuthStore() {
     return {
         subscribe,
 
-        checkAuth: () => {
-            const authStatus = getUser() != null
+        checkAuth: async () => {
+            const session = await getSession()
+            const authStatus = session !== null && await isSessionValid()
 
             update(store => ({
                 ...store,
@@ -97,4 +98,4 @@ function createAuthStore() {
 
 export const authStore = createAuthStore()
 
-// if (typeof window !== 'undefined') authStore.checkAuth()
+if (typeof window !== 'undefined') authStore.checkAuth()

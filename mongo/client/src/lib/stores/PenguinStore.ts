@@ -46,8 +46,6 @@ function createPenguinStore() {
         update(store => ({ ...store, loading: true, error: null }))
 
         const user = await getCurrentUser()
-
-        console.log(user)
         
         try {
             const queries = [Query.orderDesc('$createdAt'), Query.limit(100)]
